@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const con = require("../db/dbconnection");
+const jwt = require("jsonwebtoken");
 const middleware = require("../middleware/auth");
-const authController = require("../controller/auth/index");
 
 // GET ALL
 router.get("/"),
   (req, res) => {
     try {
-      con.query("SELECT * FROM products", (err, result) => {
+      con.query("SELECT * FROM user", (err, result) => {
         if (err) throw err;
         res.send(result);
       });
@@ -23,7 +23,7 @@ module.exports = router;
 router.get("/:id", (req, res) => {
   try {
     con.query(
-      `SELECT * FROM users where user_id =${req.params.id}`,
+      `SELECT * FROM user where user_id =${req.params.user_id}`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -36,8 +36,9 @@ router.get("/:id", (req, res) => {
   }
 });
 
-// POST
-router.post("/", (req, res) => {
+
+// PUT
+router.put("/:user_id", middleware, (req, res) => {
   const {
     email,
     password,
@@ -49,9 +50,13 @@ router.post("/", (req, res) => {
     phone,
     userRole,
   } = req.body;
+
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+
   try {
     con.query(
-      `INSERT into users (email,password,full_name,billing_address,default_shipping_address,country,cart,phone,userRole) values ("${email}", "${password}", "${full_name}", "${billing_address}", "${default_shipping_address}", "${country}", "${cart}","${phone}", "${userRole}" )`,
+      `UPDATE user SET email="${email}", password="${hash}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", cart="${cart}", phone="${phone}", userRole="${userRole}"  WHERE user_id= "${req.params.user_id}"`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -62,36 +67,11 @@ router.post("/", (req, res) => {
   }
 });
 
-// PUT
-router.put("/", (req, res) => {
-  const {
-    email,
-    password,
-    full_name,
-    billing_address,
-    default_shipping_address,
-    country,
-    cart,
-    phone,
-    userRole,
-  } = req.body;
-  try {
-    con.query(
-      `UPDATE users SET email="${email}", password="${password}", full_name="${full_name}", billing_address="${billing_address}",default_shipping_address="${default_shipping_address}",country="${country}", cart="${cart}", phone="${phone}",userRole= "${userRole}" WHERE user.user_id="${req.params.id}"`,
-      (err, result) => {
-        if (err) throw err;
-        res.send(result);
-      }
-    );
-  } catch (error) {
-    console.log(error);
-  }
-});
 // DELETE
-router.delete("/:id", (req, res) => {
+router.delete("/:user_id", (req, res) => {
   try {
     con.query(
-      `DELETE from users WHERE user_id="${req.params.id}"`,
+      `DELETE from user WHERE user_id="${req.params.user_id}"`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -102,27 +82,10 @@ router.delete("/:id", (req, res) => {
   }
 });
 const bcrypt = require("bcryptjs");
-// Register Route
-// The Route where Encryption starts
-router.post("/register", (req, res) => {
-  return authController.Register(req, res);
-});
-
-const jwt = require("jsonwebtoken");
-const auth = require("../middleware/auth");
-
-// Login
-router.post("/login", (req, res) => {
-  return authController.Login(req, res);
-});
-// Verify
-router.get("/users/verify", (req, res) => {
-  return authController.Verify(req, res);
-});
 
 router.get("/", middleware, (req, res) => {
   try {
-    let sql = "SELECT * FROM users";
+    let sql = "SELECT * FROM user";
     con.query(sql, (err, result) => {
       if (err) throw err;
       res.send(result);
@@ -137,12 +100,12 @@ router.get("/", middleware, (req, res) => {
 // The Route where Encryption starts
 router.post("/register", (req, res) => {
   try {
-    let sql = "INSERT INTO users SET ?";
+    let sql = "INSERT INTO user SET ?";
     const {
       full_name,
       email,
       password,
-      user_type,
+      userRole,
       phone,
       country,
       cart,
@@ -158,8 +121,8 @@ router.post("/register", (req, res) => {
       full_name,
       email,
       // We sending the hash value to be stored witin the table
-      hash,
-      user_type,
+      password: hash,
+      userRole,
       phone,
       country,
       cart,
@@ -180,7 +143,7 @@ router.post("/register", (req, res) => {
 // The Route where Decryption happens
 router.post("/login", (req, res) => {
   try {
-    let sql = "SELECT * FROM users WHERE ?";
+    let sql = "SELECT * FROM user WHERE ?";
     let user = {
       email: req.body.email,
     };
@@ -189,17 +152,33 @@ router.post("/login", (req, res) => {
       if (result.length === 0) {
         res.send("Email not found please register");
       } else {
-        // Decryption
-        // Accepts the password stored in database and the password given by user (req.body)
         const isMatch = await bcrypt.compare(
           req.body.password,
           result[0].password
         );
-        // If password does not match
         if (!isMatch) {
           res.send("Password incorrect");
         } else {
-          res.send(result);
+          // The information the should be stored inside token
+          const payload = {
+            user: {
+              full_name: result[0].full_name,
+              email: result[0].email,
+            },
+          };
+          // Creating a token and setting expiry date
+          jwt.sign(
+            payload,
+            process.env.jwtSecret,
+            {
+              expiresIn: "365d",
+            },
+            (err, token) => {
+              if (err) throw err;
+              res.json({ token });
+              console.log(req.body);
+            }
+          );
         }
       }
     });

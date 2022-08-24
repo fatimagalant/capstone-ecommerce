@@ -8,4 +8,4 @@ var con = sql.createConnection({
   database: process.env.DB_NAME,
   multipleStatements: true,
 });
-module.export = con;
+module.exports = con;

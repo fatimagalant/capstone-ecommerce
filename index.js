@@ -2,7 +2,7 @@
 const express = require("express"); // Used to set up a server
 const cors = require("cors"); // Used to prevent errors when working locally
 const router = express();
-router.set("port", process.env.PORT || 1738);
+router.set("port", process.env.PORT || 3000);
 router.use(express.json());
 router.use(cors());
 
