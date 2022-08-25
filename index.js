@@ -12,10 +12,10 @@ router.use(express.json());
 router.use(cors());
 router.use(express.static("public"));
 
-router.use("/index.html", express.static(__dirname + "/index.html"));
-router.get("/", (req, res) => {
-  res.sendFile(__dirname + "/" + "index.html");
-});
+// router.use("/index.html", express.static(__dirname + "/index.html"));
+// router.get("/", (req, res) => {
+//   res.sendFile(__dirname + "/" + "index.html");
+// });
 
 router.use("/products", productRoute);
 router.use("/users", userRoute);
