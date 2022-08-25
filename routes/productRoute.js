@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const con = require("../db/dbconnection");
 const middleware = require("../middleware/auth");
+
 //Get all products
 router.get("/", (req, res) => {
   try {
@@ -29,7 +30,7 @@ router.get("/:product_id", (req, res) => {
     res.status(400).send(error);
   }
 });
-//update products
+//update products / PUT
 router.put(
   "/:product_id",
   middleware,
@@ -42,7 +43,6 @@ router.put(
       price,
       weight,
       descriptions,
-      thumbnail,
       image,
       category,
       create_date,
@@ -54,7 +54,7 @@ router.put(
     try {
       con.query(
         //When using the ${}, the content of con.query MUST be in the back tick
-        `UPDATE products set sku="${sku}", name="${name}", price="${price}", weight="${weight}", descriptions="${descriptions}", thumbnail="${thumbnail}", image="${image}", category="${category}", create_date="${create_date}", stock="${stock}" WHERE product_id = "${req.params.product_id}"`,
+        `UPDATE products set sku="${sku}", name="${name}", price="${price}", weight="${weight}", descriptions="${descriptions}", image="${image}", category="${category}", create_date="${create_date}", stock="${stock}" WHERE product_id = "${req.params.product_id}"`,
         (err, result) => {
           if (err) throw err;
           res.send("product successfully updated");
@@ -81,7 +81,6 @@ router.post(
       price,
       weight,
       descriptions,
-      thumbnail,
       image,
       category,
       create_date,
@@ -94,7 +93,7 @@ router.post(
       con.query(
         //When using the ${}, the content of con.query MUST be in the back tick
         `INSERT INTO products (
-        sku, name, price, weight, descriptions, thumbnail, image, category, create_date, stock) VALUES ( "${sku}", "${name}", "${price}","${weight}", "${descriptions}","${thumbnail}","${image}", "${category}","${create_date}","${stock}" )`,
+        sku, name, price, weight, descriptions,image, category, create_date, stock) VALUES ( "${sku}", "${name}", "${price}","${weight}", "${descriptions}","${image}", "${category}","${create_date}","${stock}" )`,
         (err, result) => {
           if (err) throw err;
           res.send("product successfully created");
