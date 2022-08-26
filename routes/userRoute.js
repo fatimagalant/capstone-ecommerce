@@ -8,7 +8,7 @@ const middleware = require("../middleware/auth");
 router.get("/"),
   (req, res) => {
     try {
-      con.query("SELECT * FROM user", (err, result) => {
+      con.query("SELECT * FROM users", (err, result) => {
         if (err) throw err;
         res.send(result);
       });
@@ -23,7 +23,7 @@ module.exports = router;
 router.get("/:id", (req, res) => {
   try {
     con.query(
-      `SELECT * FROM user where user_id =${req.params.user_id}`,
+      `SELECT * FROM users where user_id =${req.params.id}`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -35,7 +35,6 @@ router.get("/:id", (req, res) => {
     res.status(400).send(error);
   }
 });
-
 
 // PUT
 router.put("/:user_id", middleware, (req, res) => {
@@ -56,7 +55,7 @@ router.put("/:user_id", middleware, (req, res) => {
 
   try {
     con.query(
-      `UPDATE user SET email="${email}", password="${hash}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", cart="${cart}", phone="${phone}", userRole="${userRole}"  WHERE user_id= "${req.params.user_id}"`,
+      `UPDATE users SET email="${email}", password="${hash}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", cart="${cart}", phone="${phone}", userRole="${userRole}"  WHERE user_id= "${req.params.user_id}"`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -71,7 +70,7 @@ router.put("/:user_id", middleware, (req, res) => {
 router.delete("/:user_id", (req, res) => {
   try {
     con.query(
-      `DELETE from user WHERE user_id="${req.params.user_id}"`,
+      `DELETE from users WHERE user_id="${req.params.user_id}"`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -85,7 +84,7 @@ const bcrypt = require("bcryptjs");
 
 router.get("/", middleware, (req, res) => {
   try {
-    let sql = "SELECT * FROM user";
+    let sql = "SELECT * FROM users";
     con.query(sql, (err, result) => {
       if (err) throw err;
       res.send(result);
@@ -94,13 +93,13 @@ router.get("/", middleware, (req, res) => {
     console.log(error);
   }
 });
-// const bcrypt = require("bcryptjs");
 
 // Register Route
 // The Route where Encryption starts
 router.post("/register", (req, res) => {
+  console.log(req.body.full_name);
   try {
-    let sql = "INSERT INTO user SET ?";
+    let sql = "INSERT INTO users SET ?";
     const {
       full_name,
       email,
@@ -122,17 +121,17 @@ router.post("/register", (req, res) => {
       email,
       // We sending the hash value to be stored witin the table
       password: hash,
-      userRole,
-      phone,
-      country,
-      cart,
       billing_address,
       default_shipping_address,
+      country,
+      cart,
+      phone,
+      userRole,
     };
     con.query(sql, user, (err, result) => {
       if (err) throw err;
       console.log(result);
-      res.send(`User ${(user.full_name, user.email)} created successfully`);
+      res.send(`users ${(user.full_name, user.email)} created successfully`);
     });
   } catch (error) {
     console.log(error);
@@ -142,8 +141,9 @@ router.post("/register", (req, res) => {
 // Login
 // The Route where Decryption happens
 router.post("/login", (req, res) => {
+  console.log(req.body.password);
   try {
-    let sql = "SELECT * FROM user WHERE ?";
+    let sql = "SELECT * FROM users WHERE ?";
     let user = {
       email: req.body.email,
     };

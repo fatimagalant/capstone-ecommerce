@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+@import url("https://fonts.googleapis.com/css2?family=Aboreto&display=swap");
+#tables {
+  background-color: blueviolet;
+  min-height: 100vh;
+  object-fit: contain;
+  aspect-ratio: 1;
+  color: white;
+}
+#title {
+  font-family: "Aboreto", cursive;
+}
+.text-light {
+  font-family: "Aboreto", cursive;
+}
+.t-head {
+  padding: 30px;
+}
+td {
+  font-family: "Aboreto", cursive;
+  font-weight: 700;
+}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+      <link rel="stylesheet" href="styles.css">
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+      integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aboreto&display=swap" rel="stylesheet">
+  </head>
+  <body>
+       <div class="container-fluid" id="instructions">
+
+   
+        <div class="title-container d-flex justify-content-center m-4 p-3">
+          <h1 class="mx-auto text-light" id="title">NATURE-LY API</h1>
+               </div>
+          <div class="container p-4">
+            <table class="table table-dark">
+        <thead>
+        </thead>
+        <tbody>
+          <h2 class="text-light">Products</h2>
+          <tr class="table-active">
+          </tr>
+          
+            <td colspan="1" class="table-active">Request method</td>
+            <td colspan="1" class="table-active">URL</td>
+            <td colspan="1" class="table-active">Effect</td>
+          </tr>
+          <tr>
+            <td>
+              GET
+            </td>
+            <td>
+              "/"
+            </td>
+            <td>
+              Get all posts
+            </td>
+          </tr>
+          <tr>
+            <td>
+              GET
+            </td>
+            <td>
+              "/:id"
+            </td>
+            <td>
+              Get single post
+            </td>
+          </tr>
+          <tr>
+            <td>
+              POST
+            </td>
+            <td>
+              "/"
+            </td>
+            <td>
+              Create new post
+            </td>
+          </tr>
+            <td>
+              PUT 
+            </td>
+            <td>
+              "/:id"
+            </td>
+            <td>
+              edit post with ID
+            </td>
+          </tr>
+            <td>
+              DELETE
+            </td>
+            <td>
+              "/:id"
+            </td>
+            <td>
+              Deleting post with ID
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+          </div>
+          <div class="container p-4">
+            <table class="table table-dark">
+        <thead>
+        </thead>
+        <tbody>
+          <h2 class="text-light">User</h2>
+          <tr class="table-active">
+          </tr>
+          
+            <td colspan="1" class="table-active">Request method</td>
+            <td colspan="1" class="table-active">URL</td>
+            <td colspan="1" class="table-active">Effect</td>
+          </tr>
+          <tr>
+            <td>
+              GET
+            </td>
+            <td>
+              "/"
+            </td>
+            <td>
+              Get all users
+            </td>
+          </tr>
+          <tr>
+            <td>
+              GET
+            </td>
+            <td>
+              "/:id"
+            </td>
+            <td>
+              Get single user
+            </td>
+          </tr>
+          <tr>
+            <td>
+              POST
+            </td>
+            <td>
+              "/register"
+            </td>
+            <td>
+              Add new user
+            </td>
+          </tr>
+          <tr>
+            <td>
+              POST
+            </td>
+            <td>
+              "/login"
+            </td>
+            <td>
+            Login as registered user
+            </td>
+          </tr>
+              <tr>
+            <td>
+              GET
+            </td>
+            <td>
+              "/user/verify"
+            </td>
+            <td>
+              Verify a logged in user
+            </td>
+          </tr>
+            <td>
+              PUT 
+            </td>
+            <td>
+              "/:id"
+            </td>
+            <td>
+              edit user with ID
+            </td>
+          </tr>
+            <td>
+              DELETE
+            </td>
+            <td>
+              "/:id"
+            </td>
+            <td>
+              Deleting user using ID  
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+          </div>
+        </div>
+     </div>
+</div>
+<script
+src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js"
+integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
