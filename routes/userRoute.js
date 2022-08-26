@@ -82,7 +82,7 @@ router.delete("/:user_id", (req, res) => {
 });
 const bcrypt = require("bcryptjs");
 
-router.get("/", middleware, (req, res) => {
+router.get("/", (req, res) => {
   try {
     let sql = "SELECT * FROM users";
     con.query(sql, (err, result) => {
