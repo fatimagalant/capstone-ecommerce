@@ -20,7 +20,8 @@ router.get("/"),
 module.exports = router;
 
 // GET ONE
-router.get("/:id", (req, res) => {
+router.get("/:id", middleware, (req, res) => {
+  console.log(req.body.user_id);
   try {
     con.query(
       `SELECT * FROM users where user_id =${req.params.id}`,
@@ -37,7 +38,7 @@ router.get("/:id", (req, res) => {
 });
 
 // PUT
-router.put("/:user_id", middleware, (req, res) => {
+router.put("/:id", middleware, (req, res) => {
   const {
     email,
     password,
@@ -55,7 +56,7 @@ router.put("/:user_id", middleware, (req, res) => {
 
   try {
     con.query(
-      `UPDATE users SET email="${email}", password="${hash}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", cart="${cart}", phone="${phone}", userRole="${userRole}"  WHERE user_id= "${req.params.user_id}"`,
+      `UPDATE users SET email="${email}", password="${hash}", full_name="${full_name}", billing_address="${billing_address}", default_shipping_address="${default_shipping_address}", country="${country}", cart="${cart}", phone="${phone}", userRole="${userRole}"  WHERE user_id= "${req.params.id}"`,
       (err, result) => {
         if (err) throw err;
         res.send(result);

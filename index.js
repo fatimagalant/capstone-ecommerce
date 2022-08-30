@@ -9,7 +9,7 @@ const userRoute = require("./routes/userRoute.js");
 
 const app = express();
 
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.PORT || 3360);
 app.use(express.json());
 app.use(cors());
 app.use(express.static(path.join(__dirname, "public")));
