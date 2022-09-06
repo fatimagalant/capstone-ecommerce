@@ -98,7 +98,7 @@ router.get("/", (req, res) => {
 // Register Route
 // The Route where Encryption starts
 router.post("/register", (req, res) => {
-  console.log(req.body.full_name, email, password, phone);
+  console.log(req.body.full_name);
   try {
     let sql = "INSERT INTO users SET ?";
     const {
